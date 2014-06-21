@@ -1,0 +1,24 @@
+<head>
+  <!-- Load Polymer -->
+  <script src="/bower_components/platform/platform.js"></script>
+
+  <!-- Load component(s) -->
+  <link rel="import" href="x-foo.html">
+
+  <!-- The actual tests -->
+  <script type="application/dart" src="test.dart"></script>
+  <script src="packages/unittest/test_controller.js"></script>
+
+  <!-- Style that will apply to both page and Polymer elements -->
+  <style>
+    button { border: 5px solid orange; }
+  </style>
+</head>
+<body>
+  <div id=test><!-- Test element -->
+    <x-foo></x-foo>
+  </div>
+  <div id=page><!-- Page element -->
+    <button type=button>Test in Main Page</button>
+  </div>
+</body>
