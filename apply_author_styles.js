@@ -39,8 +39,12 @@ Polymer('apply-author-styles', {
   _isFromOriginalAuthorDocument: function(el) {
     var originalHtml = this.originalAuthorDocument.response;
 
-    var re;
-    try { re = new RegExp(el.outerHTML); }
+    //console.log(h);
+    try { re = new RegExp(h); console.log(re);}
+    catch (x) { return false; }
+
+    var re, linkPattern = el.outerHTML.replace(/\/*\s*\>/, ""); // maybe <link ... /> or <link ... >
+    try { re = new RegExp(linkPattern); }
     catch (x) { return false; }
 
     return re.test(originalHtml);
