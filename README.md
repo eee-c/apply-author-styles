@@ -17,7 +17,7 @@ Then import and use the `<apply-author-styles>` tag:
 <polymer-element name="x-pizza">
   <template>
     <apply-author-styles></apply-author-styles>
-    <!-- ... --->
+    <!-- ... -->
   </template>
   <script src="x_pizza.js"></script>
 </polymer-element>
