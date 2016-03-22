@@ -1,5 +1,50 @@
-<link rel="import"
-      href="../core-ajax/core-ajax.html">
-<polymer-element name="apply-author-styles">
-  <script src="apply_author_styles.js"></script>
-</polymer-element>
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="bower_components/iron-ajax.html">
+
+<dom-module id="meteor-login">
+  <script>
+  Polymer({
+    is:'apply-author-styles',
+    attached: function() {
+      this.parent = this.parentNode;
+      this.authorDocument = this.ownerDocument;
+      this.fetchOriginalOwnerDocument();
+    },
+    fetchOriginalOwnerDocument: function() {
+      var doc = this.originalAuthorDocument = document.createElement('iron-ajax');
+      doc.handle-as="html";
+      doc.on-response=addExternalCss;
+      doc.url = this.authorDocument.location.href;
+      doc.generateRequest();
+    },
+    addExternalCss: function() {
+      for (var i=0; i<this.authorDocument.head.children.length; i++) {
+        var el = this.authorDocument.head.children[i];
+        if (!this._isSupportedTag(el)) continue;
+        if (!this._isFromOriginalAuthorDocument(el)) continue;
+        var clone = el.cloneNode(true);
+        if (clone.href != 'undefined') {
+          clone.href = new URL(clone.href, document.baseURI).href;
+        }
+        this.parent.appendChild(clone);
+      }
+
+      // TODO: is this really the best way to handle this?
+      // this.parent.host.element.convertSheetsToStyles(this.parent);
+      this.element.convertSheetsToStyles(this.parent);
+    },
+    _isSupportedTag: function(el){
+      if (el.tagName == 'LINK') return true;
+      if (el.tagName == 'STYLE') return true;
+      return false;
+    },
+    _isFromOriginalAuthorDocument: function(el) {
+      var originalHtml = this.originalAuthorDocument.response;
+      var re;
+      try { re = new RegExp(el.outerHTML); }
+      catch (x) { return false; }
+      return re.test(originalHtml);
+    }
+  });
+  </script>
+</dom-module>
